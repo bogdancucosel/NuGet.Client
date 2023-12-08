@@ -124,25 +124,25 @@ namespace NuGet.Packaging
 
             internal void UpdateFileTimeEntry(string fileFullPath, DateTime dateTime)
             {
-                if (string.IsNullOrEmpty(fileFullPath)) throw new ArgumentNullException(nameof(fileFullPath));
+                //if (string.IsNullOrEmpty(fileFullPath)) throw new ArgumentNullException(nameof(fileFullPath));
 
-                int retry = 0;
-                bool successful = false;
-                while (!successful)
-                {
-                    try
-                    {
-                        File.SetLastWriteTimeUtc(fileFullPath, dateTime);
-                        successful = true;
-                    }
-                    catch (IOException) when (retry < _updateFileTimeFromEntryMaxRetries)
-                    {
-                        // Use exponentional backoff, to reduce CPU usage, allowing other threads to work, even if this
-                        // isn't an async method and therefore requires the ThreadPool to spin up new threads.
-                        Thread.Sleep(1 << retry);
-                        retry++;
-                    }
-                }
+                //int retry = 0;
+                //bool successful = false;
+                //while (!successful)
+                //{
+                //    try
+                //    {
+                //        File.SetLastWriteTimeUtc(fileFullPath, dateTime);
+                //        successful = true;
+                //    }
+                //    catch (IOException) when (retry < _updateFileTimeFromEntryMaxRetries)
+                //    {
+                //        // Use exponentional backoff, to reduce CPU usage, allowing other threads to work, even if this
+                //        // isn't an async method and therefore requires the ThreadPool to spin up new threads.
+                //        Thread.Sleep(1 << retry);
+                //        retry++;
+                //    }
+                //}
             }
         }
     }

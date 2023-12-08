@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using Microsoft.Win32.SafeHandles;
-using NuGet.Common;
+//using NuGet.Common;
 
 namespace NuGet.Packaging
 {
@@ -23,29 +23,30 @@ namespace NuGet.Packaging
 
         private static Func<string, FileStream> CreateFileMethodSelector()
         {
-            // Entry permissions are not restored to maintain backwards compatibility with .NET Core 1.x.
-            // (https://github.com/NuGet/Home/issues/4424)
-            // On .NET Core 1.x, all extracted files had default permissions of 766.
-            // The default on .NET Core 2.x has changed to 666.
-            // To avoid breaking executable files in existing packages (which don't have the x-bit set)
-            // we force the .NET Core 1.x default permissions.
-            if (RuntimeEnvironmentHelper.IsWindows)
-            {
-                // Windows doesn't use POSIX permission bits.
-                return File.Create;
-            }
-            else if (RuntimeEnvironmentHelper.IsMono)
-            {
-                // Mono doesn't work with the DotnetCoreCreateFile method below, so we'll chmod each file.
-                // But since the OS only applies the umask on creation, we'll need to figure out what the
-                // umask is so that we can apply the correct permissions bits to chmod.
-                ApplyUMaskToUnixPermissions();
-                return MonoPosixCreateFile;
-            }
-            else
-            {
-                return DotnetCoreCreateFile;
-            }
+            return File.Create;
+            //// Entry permissions are not restored to maintain backwards compatibility with .NET Core 1.x.
+            //// (https://github.com/NuGet/Home/issues/4424)
+            //// On .NET Core 1.x, all extracted files had default permissions of 766.
+            //// The default on .NET Core 2.x has changed to 666.
+            //// To avoid breaking executable files in existing packages (which don't have the x-bit set)
+            //// we force the .NET Core 1.x default permissions.
+            //if (RuntimeEnvironmentHelper.IsWindows)
+            //{
+            //    // Windows doesn't use POSIX permission bits.
+            //    return File.Create;
+            //}
+            //else if (RuntimeEnvironmentHelper.IsMono)
+            //{
+            //    // Mono doesn't work with the DotnetCoreCreateFile method below, so we'll chmod each file.
+            //    // But since the OS only applies the umask on creation, we'll need to figure out what the
+            //    // umask is so that we can apply the correct permissions bits to chmod.
+            //    ApplyUMaskToUnixPermissions();
+            //    return MonoPosixCreateFile;
+            //}
+            //else
+            //{
+            //    return DotnetCoreCreateFile;
+            //}
         }
 
         private static FileStream DotnetCoreCreateFile(string path)
